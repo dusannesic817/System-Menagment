@@ -34,7 +34,12 @@ class Member{
     }
     
 
-    public function list(){
+    public function list($limit,$get){
+
+        $start=($get-1)*$limit;
+       
+     
+
         $sql="SELECT members.*,
         trainers.fist_name as trainer_first_name,
         trainers.last_name as trainer_last_name,
@@ -43,13 +48,38 @@ class Member{
         trainings.price as training_price
        FROM members
        LEFT JOIN trainers on members.trainer_id = trainers.trainer_id
-       LEFT JOIN trainings on members.training_id = trainings.training_id";
+       LEFT JOIN trainings on members.training_id = trainings.training_id
+       LIMIT $start,$limit
+     
+       ";
         $run=$this->db->getConnection()->query($sql);
         $results=$run->fetch_all(MYSQLI_ASSOC);
         
         return $results;
-    }
+
+     
+    
 }
+
+
+    public function count(){
+        $sql='SELECT count(member_id) as member_id  FROM members';
+        $run= $this->db->getConnection()->query($sql);
+        $result=$run->fetch_assoc();
+
+        return $result;
+
+    }
+
+    
+
+    
+
+}
+
+
+
+
 
 /*
 
