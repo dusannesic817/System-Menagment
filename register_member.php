@@ -20,6 +20,7 @@
         $create=$member->registerMember($fist_name,$last_name,$number,$address,$email,$photo_path,$training_id,$pdf);
 
         if($create){
+           
             $_SESSION['success_reg_member']='Uspesno ste registrovali clana';
 
             header('location: admin_dashbord.php');

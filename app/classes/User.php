@@ -23,8 +23,9 @@ class User{
         $result= $stmt->execute();
         
            if ($result) {
-                $lastInsertedId = $this->db->getConnection()->insert_id;
-                $_SESSION["id"] = $lastInsertedId;
+            $lastInsertedId = mysqli_insert_id($this->db->getConnection());
+
+            $_SESSION["id"] = $lastInsertedId;
                 return true;
             } else {
                 return false;

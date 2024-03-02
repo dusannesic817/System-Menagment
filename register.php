@@ -8,6 +8,7 @@ $usernameValidation='';
 $passwordValidation='';
 
 
+  
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     $username=$_POST['username'];
     $password=$_POST['password'];
@@ -24,6 +25,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         $create=$user->createAdmin($username,$password);
 
         if($create){
+
+         
+   
             $_SESSION["message"]["type"]= "success"; 
             $_SESSION["message"]["text"]= "Successfully registered account"; 
             header("Location: index.php");

@@ -2,10 +2,18 @@
 
 require_once 'app/database/dbConn.php';
 require_once 'app/classes/Member.php';
+require_once 'app/classes/User.php';
+require_once 'app/classes/Session.php';
+require_once 'inc/header.php';
 
+if(!$user->isLoged()){
 
+  header('location: index.php');
+  exit();
+}
 
 $member= new Member();
+$session= new Session();
 
 $limit=5;
 
@@ -30,6 +38,16 @@ $list=$member->list($limit,$page);
     <title>List of Members</title>
 </head>
 <body>
+<?php  if($session->issetSession('delete')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php
+                echo $_SESSION['delete'];
+                unset($_SESSION['delete']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <?php  endif;?>
     <div class="container mt-5">
       <table class="table table-striped">
         <thead>
@@ -47,9 +65,10 @@ $list=$member->list($limit,$page);
         <tbody>
             <?php
             foreach($list as $value){
+              $id=$value['member_id'];
             ?>
           <tr>
-            <th><?php echo $value['member_id']; ?></th>
+            <th><?php echo $id; ?></th>
             <td> <?php echo $value['first_name'] ." ".$value['last_name'] ?> </td>
             <td> <?php echo $value['email'] ?></td>
             <td><?php echo $value['number'] ?></td>
@@ -63,6 +82,7 @@ $list=$member->list($limit,$page);
                 echo $created;
               ?>
             </td>
+            <td ><a href='delete_member.php?id=<?php echo $id;?>'>Delete</a></td>
           </tr>
             <?php }?>
 
@@ -72,6 +92,10 @@ $list=$member->list($limit,$page);
 
                   $totalPages=ceil($total/ $limit);
                   $previous= $page -1;
+                  
+                  if($previous<$page){
+                    $previous=$page;
+                  }
 
                   if($page<$totalPages){
                     $next= $page+1;

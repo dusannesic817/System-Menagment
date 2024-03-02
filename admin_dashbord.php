@@ -3,6 +3,7 @@
 require_once 'app/database/dbConn.php';
 require_once 'app/classes/Session.php';
 require_once 'app/classes/User.php';
+require_once 'inc/header.php';
 
 $user=new User();
 $session= new Session();
@@ -41,14 +42,6 @@ if(!$user->isLoged()){
             </div>
 
             <?php  endif;?>
-   
-
-            <div>
-                <a href='logOut.php'>Log Out</a>
-            </div>
-            <div>
-                <a href='member_list.php'>List of members</a>
-            </div>
 
             <div class=" container mt-5">
                 <div class="row">

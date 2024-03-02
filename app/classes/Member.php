@@ -1,6 +1,6 @@
 <?php
 
-
+require_once 'fpdf/fpdf.php';
 
 class Member{
 
@@ -10,6 +10,8 @@ class Member{
         global $dbconnection;
         $this->db = $dbconnection;
     }
+
+
 
 
     public function registerMember($first_name, $last_name, $number, $address, $email, $photo_path, $training_id, $access_card) {
@@ -25,12 +27,14 @@ class Member{
         $result = $stmt->execute();
     
         if ($result) {
-            $lastInsertedId = $this->db->getConnection()->insert_id;
-            $_SESSION["member_id"] = $lastInsertedId;
+           $lastId=$this->db->getConnection()->insert_id;
+            $this->generetePdf($lastId,$first_name,$last_name,$email);
             return true;
         } else {
+            echo "Greška prilikom izvršenja upita za umetanje podataka: " . $stmt->error;
             return false;
         }
+        
     }
     
 
@@ -38,8 +42,6 @@ class Member{
 
         $start=($get-1)*$limit;
        
-     
-
         $sql="SELECT members.*,
         trainers.fist_name as trainer_first_name,
         trainers.last_name as trainer_last_name,
@@ -57,11 +59,7 @@ class Member{
         
         return $results;
 
-     
-    
 }
-
-
     public function count(){
         $sql='SELECT count(member_id) as member_id  FROM members';
         $run= $this->db->getConnection()->query($sql);
@@ -71,9 +69,39 @@ class Member{
 
     }
 
-    
+    public function delete_member($id){
+
+        $sql='DELETE FROM members WHERE member_id=? LIMIT 1';
+
+        $stmt=$this->db->getConnection()->prepare($sql);
+        $stmt->bind_param('i',$id);
+        return $stmt->execute();
+    }
 
     
+    public function edit_member($id){
+
+    }
+
+
+    
+    public function generetePdf($id,$first_name,$last_name,$email){
+        $pdf = new FPDF();
+
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(40,10,'Access Card');
+        $pdf->Ln();
+        $pdf->Cell(40,10,'Member ID: '. $id);
+        $pdf->Ln();
+        $pdf->Cell(40,10,'Name: '. $first_name. ' '. $last_name);
+        $pdf->Ln();
+        $pdf->Cell(40,10,'Email: '. $email);
+        $pdf->Ln();
+            
+        $filename = "public/acess_cards/acess_cards_" . $id . ".pdf";
+        $pdf->Output('F', $filename);
+    }
 
 }
 
