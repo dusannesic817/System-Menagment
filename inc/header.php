@@ -24,7 +24,9 @@
         <a class="nav-link" href="member_list.php">List of Members</a>
       </div>
       <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="register_trainer.php">Register Trainer</a>
         <a class="nav-link" href="logOut.php">Log Out</a>
+        
       </div>
     </div>
   </div>

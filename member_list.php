@@ -6,14 +6,16 @@ require_once 'app/classes/User.php';
 require_once 'app/classes/Session.php';
 require_once 'inc/header.php';
 
+$member= new Member();
+$user= new User();
+$session= new Session();
+
 if(!$user->isLoged()){
 
   header('location: index.php');
   exit();
 }
 
-$member= new Member();
-$session= new Session();
 
 $limit=5;
 
@@ -91,9 +93,11 @@ $list=$member->list($limit,$page);
                   foreach($max as $total){}
 
                   $totalPages=ceil($total/ $limit);
-                  $previous= $page -1;
+                  //$previous= $page -1;
                   
-                  if($previous<$page){
+                  if($page>1){
+                    $previous= $page -1;
+                  }else{
                     $previous=$page;
                   }
 
