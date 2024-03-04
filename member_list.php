@@ -25,7 +25,15 @@ require_once 'inc/header.php';
     $page = 1;
   }
 
-  $list=$member->list($limit,$page);
+  if(isset($_GET['search']) && !empty($_GET['search'])){
+    $search= $_GET['search'];
+    $list=$member->list($limit,$page,$search);
+
+  }else{
+    $list=$member->list($limit,$page);
+  }
+
+  
 
 ?>
 
@@ -51,7 +59,11 @@ require_once 'inc/header.php';
 
             <?php  endif;?>
     <div class="container mt-5">
-      <table class="table table-striped">
+    <form class="d-flex" role="search" method='GET'>
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='search'>
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+      <table class="table table-striped mt-4">
         <thead>
           <tr>
             <th scope="col"></th>

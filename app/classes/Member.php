@@ -38,28 +38,40 @@ class Member{
     }
     
 
-    public function list($limit,$get){
+    public function list($limit, $get, $search = null) {
 
-        $start=($get-1)*$limit;
-       
-        $sql="SELECT members.*,
+        $start = ($get - 1) * $limit;
+        $sql = "SELECT members.*,
         trainers.fist_name as trainer_first_name,
         trainers.last_name as trainer_last_name,
         trainings.name as training_name,
         trainings.sesions as training_session,
         trainings.price as training_price
-       FROM members
-       LEFT JOIN trainers on members.trainer_id = trainers.trainer_id
-       LEFT JOIN trainings on members.training_id = trainings.training_id
-       LIMIT $start,$limit
-     
-       ";
-        $run=$this->db->getConnection()->query($sql);
-        $results=$run->fetch_all(MYSQLI_ASSOC);
-        
+        FROM members
+        LEFT JOIN trainers ON members.trainer_id = trainers.trainer_id
+        LEFT JOIN trainings ON members.training_id = trainings.training_id";
+    
+    if ($search) {
+        $searchTerms = explode(" ", $search); 
+        $firstName = $searchTerms[0];
+        $lastName = isset($searchTerms[1]) ? $searchTerms[1] : '';
+    
+       
+        if ($lastName) {
+            $sql .= " WHERE members.first_name LIKE '%$firstName%' AND members.last_name LIKE '%$lastName%'";
+        } else {
+            $sql .= " WHERE members.first_name LIKE '%$firstName%' OR members.last_name LIKE '%$firstName%'";
+        }
+    }
+    
+        $sql .= " LIMIT $start, $limit";
+    
+        $run = $this->db->getConnection()->query($sql);
+        $results = $run->fetch_all(MYSQLI_ASSOC);
+    
         return $results;
-
-}
+    }
+    
     public function count(){
         $sql='SELECT count(member_id) as member_id  FROM members';
         $run= $this->db->getConnection()->query($sql);
