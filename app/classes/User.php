@@ -1,5 +1,6 @@
 <?php
-
+    //session_start();
+    $_SESSION['bad_logins']=0;
 class User{
 
     protected $db;
@@ -50,8 +51,15 @@ class User{
 
                 if(password_verify($password,$row['password'])){
                     $_SESSION['id']=$row['id'];
-
+                    unset($_SESSION['bad_login']);
                     return true;
+                }else{
+                    $_SESSION['bad_login']++;
+                    if($_SESSION['bad_login']>5){
+
+                        header('location: reset_password.php');
+                        exit();
+                    }
                 }
             }
 

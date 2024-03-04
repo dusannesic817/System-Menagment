@@ -81,6 +81,7 @@ if (isset($_SESSION["message"]) && isset($_SESSION["message"]["type"])){
                             ?>
                         </div>
                     </div>
+                    <p class="mt-3 text-center"><a href="reset_password.php">Forgot Password?</a></p>
                     <div style="text-align:center">
                     <button type="submit" class="btn btn-primary">Log in</button>
                     </div>

@@ -53,34 +53,32 @@ if($_SERVER['REQUEST_METHOD']== "POST"){
             </div>
 
             <?php  endif;?>
-<div class=" container mt-5">
-                <div class="row">
-                  <h3>Registration Trainer</h3>
-                    <div class="col-12 mt-3">
-                        <form action="" method="POST">
-                        <div class="mb-3">
-                            <label for="first_name" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name">
-                          </div>
-                          <div class="mb-3">
-                            <label for="last_name" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name">
-                          </div>
-                          <div class="mb-3">
-                            <label for="number" class="form-label">Number</label>
-                            <input type="text" class="form-control" id="number" name="number">
-                          </div>
-                          <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                          </div>
-                         
-                          <input type="submit" class="btn btn-primary mt-3" value="Register">
-                        </form>
+                  <div class=" container mt-5">
+                    <div class="row">
+                      <h3>Registration Trainer</h3>
+                        <div class="col-12 mt-3">
+                            <form action="" method="POST">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name">
+                              </div>
+                              <div class="mb-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name">
+                              </div>
+                              <div class="mb-3">
+                                <label for="number" class="form-label">Number</label>
+                                <input type="text" class="form-control" id="number" name="number">
+                              </div>
+                              <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                              </div>
+                            
+                              <input type="submit" class="btn btn-primary mt-3" value="Register">
+                            </form>
+                        </div>
                     </div>
-
-                </div>
-
-            </div> 
+                  </div> 
 </body>
 </html>
