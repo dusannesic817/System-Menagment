@@ -2,10 +2,35 @@
 
 require_once 'app/database/dbConn.php';
 require_once 'app/classes/Session.php';
-require_once 'app/classes/User.php';
+require_once 'app/classes/Trainer.php';
 require_once 'inc/header.php';
 
+    $trainer=new Trainer();
+    $session= new Session();
+
+if($_SERVER['REQUEST_METHOD']== "POST"){
+
+    $first_name=$_POST['first_name'];
+    $last_name=$_POST['last_name'];
+    $email=$_POST['email'];
+    $number=$_POST['number'];
+    
+
+    $create=$trainer->createTrainer($first_name,$last_name,$email,$number);
+
+    if($create){
+        $_SESSION['register_trainer']= 'Uspesno registrovan trener';
+        header('location:register_trainer.php');
+       exit();
+    }else{
+        $_SESSION['register_trainer']= 'Neuspesno registrovani trener';
+    }
+
+}
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,11 +43,21 @@ require_once 'inc/header.php';
     <title>Register Trainer</title>
 </head>
 <body>
+<?php  if($session->issetSession('register_trainer')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php
+                echo $_SESSION['register_trainer'];
+                unset($_SESSION['register_trainer']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <?php  endif;?>
 <div class=" container mt-5">
                 <div class="row">
                   <h3>Registration Trainer</h3>
                     <div class="col-12 mt-3">
-                        <form action="register_member.php" method="POST" enctype="multipart/form-data">
+                        <form action="" method="POST">
                         <div class="mb-3">
                             <label for="first_name" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="first_name" name="first_name">
@@ -34,10 +69,6 @@ require_once 'inc/header.php';
                           <div class="mb-3">
                             <label for="number" class="form-label">Number</label>
                             <input type="text" class="form-control" id="number" name="number">
-                          </div>
-                          <div class="mb-3">
-                            <label for="address" class="form-label">Adress</label>
-                            <input type="text" class="form-control" id="address" name="address">
                           </div>
                           <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>

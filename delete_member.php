@@ -14,7 +14,8 @@ $user= new User();
 
         if($delete){
             $_SESSION['delete']= 'Delete Successfully';
-            header("Location: member_list.php");
+            header("location: " . $_SESSION['page_number']);
+            exit();
         }else{
             header('location: index.php');
         }

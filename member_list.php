@@ -6,26 +6,26 @@ require_once 'app/classes/User.php';
 require_once 'app/classes/Session.php';
 require_once 'inc/header.php';
 
-$member= new Member();
-$user= new User();
-$session= new Session();
+  $member= new Member();
+  $user= new User();
+  $session= new Session();
 
-if(!$user->isLoged()){
+  if(!$user->isLoged()){
 
-  header('location: index.php');
-  exit();
-}
+    header('location: index.php');
+    exit();
+  }
 
 
-$limit=5;
+  $limit=5;
 
-if(isset($_GET['page'])){
-  $page = $_GET['page'];
-} else {
-  $page = 1;
-}
+  if(isset($_GET['page'])){
+    $page = $_GET['page'];
+  } else {
+    $page = 1;
+  }
 
-$list=$member->list($limit,$page);
+  $list=$member->list($limit,$page);
 
 ?>
 
@@ -115,9 +115,15 @@ $list=$member->list($limit,$page);
           <li class="page-item">
             <a class="page-link" href="member_list.php?page=<?php echo $previous?>">Previous</a>
           </li>
-        <?php for($i=1; $i<=$totalPages; $i++){?>
+        <?php for($i=1; $i<=$totalPages; $i++){
+           $_SESSION['page_number'] = 'member_list.php?page=' . $i;
+          ?>
           <li class="page-item"><a class="page-link" href="member_list.php?page=<?php echo $i?>"><?php echo $i?></a></li>
-      <?php }?>
+          
+      <?php 
+    
+      
+    }?>
           <li class="page-item">
             <a class="page-link" href="member_list.php?page=<?php echo $next?>">Next</a>
           </li>
