@@ -80,10 +80,12 @@ require_once 'inc/header.php';
             <?php
             foreach($list as $value){
               $id=$value['member_id'];
+              
+              
             ?>
           <tr>
             <th><?php echo $id; ?></th>
-            <td> <?php echo $value['first_name'] ." ".$value['last_name'] ?> </td>
+            <td><a href='update.php?id=<?php echo $id;?>'><?php echo $value['first_name'] ." ".$value['last_name'] ?> </a> </td>
             <td> <?php echo $value['email'] ?></td>
             <td><?php echo $value['number'] ?></td>
             <td> <?php echo $value['training_name'] ." ".$value['training_session'] ?> </td>
@@ -141,5 +143,20 @@ require_once 'inc/header.php';
           </li>
         </ul>
       </nav>
+
+      
+<?php
+
+
+  
+  $training= $_SESSION['select_trainings'];
+
+  foreach($training as $value){
+      var_dump($value['price']); 
+  }
+
+  
+
+?>
   </body>
   </html>

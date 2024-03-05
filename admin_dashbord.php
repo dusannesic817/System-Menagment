@@ -4,6 +4,7 @@ require_once 'app/database/dbConn.php';
 require_once 'app/classes/Session.php';
 require_once 'app/classes/User.php';
 require_once 'inc/header.php';
+require_once 'app/classes/Member.php';
 
 $user=new User();
 $session= new Session();
@@ -77,6 +78,8 @@ if(!$user->isLoged()){
 
                             $run=$dbconnection->getConnection()->query($sql);
                             $results=$run->fetch_all(MYSQLI_ASSOC);
+                            $_SESSION['select_trainings']=$results;
+                           
 
                               foreach($results as $value){
                                 echo "<option value='".$value['training_id']."'>".$value['name']." ".$value['sesions']."</option>";
@@ -95,5 +98,6 @@ if(!$user->isLoged()){
                 </div>
 
             </div>
+          
 </body>
 </html>

@@ -25,7 +25,7 @@ $sql="CREATE TABLE IF NOT EXISTS `trainings`(
 )ENGINE = InnoDB;";
 
 $sql ="CREATE TABLE IF NOT EXISTS `members` (
-    `member_id` INT  PRIMARY KEY AUTO_INCREMENT,
+    `member_id` INT PRIMARY KEY AUTO_INCREMENT,
     `first_name` VARCHAR(255),
     `last_name` VARCHAR(255),
     `number` VARCHAR(255),
@@ -39,7 +39,8 @@ $sql ="CREATE TABLE IF NOT EXISTS `members` (
     
     
     FOREIGN KEY (`training_id`) REFERENCES `trainings` (`training_id`),
-    FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`trainer_id`)
+    FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`trainer_id`),
+   
     
 ) ENGINE = InnoDB;";
 
@@ -51,6 +52,17 @@ $sql = "CREATE TABLE IF NOT EXISTS `admin`(
 ) ENGINE = InnoDB;";
 
 
+$sql='CREATE TABLE`date` (
+    date_id INT AUTO_INCREMENT PRIMARY KEY,
+    created_date DATE,
+    expired_date DATE
+)ENGINE = InnoDB;
+';
+
+$sql='ALTER TABLE members
+ADD COLUMN date_id INT,
+ADD FOREIGN KEY (date_id) REFERENCES date(date_id);
+';
 
 if($dbconnection->getConnection()->multi_query($sql)){
     echo 'Tables created successfully';

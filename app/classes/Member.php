@@ -68,6 +68,7 @@ class Member{
     
         $run = $this->db->getConnection()->query($sql);
         $results = $run->fetch_all(MYSQLI_ASSOC);
+       
     
         return $results;
     }
@@ -115,8 +116,74 @@ class Member{
         $pdf->Output('F', $filename);
     }
 
+
+    public function memberId($id){
+
+        $sql = "SELECT members.*,
+        trainers.fist_name as trainer_first_name,
+        trainers.last_name as trainer_last_name,
+        trainings.name as training_name,
+        trainings.sesions as training_session,
+        trainings.price as training_price
+        FROM members
+        LEFT JOIN trainers ON members.trainer_id = trainers.trainer_id
+        LEFT JOIN trainings ON members.training_id = trainings.training_id
+        WHERE members.member_id=?";
+
+        $stmt= $this->db->getConnection()->prepare($sql);
+        $stmt->bind_param('i',$id);
+        $stmt->execute();
+
+        $result=$stmt->get_result();
+
+        if($result->num_rows>0){
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }else{
+            return "No data";
+        }
+    }
+
+    public function listTrainers(){
+
+        $sql='SELECT * FROM trainers';
+
+        $run=$this->db->getConnection()->query($sql);
+        $results=$run->fetch_all(MYSQLI_ASSOC);
+
+        return $results;
+    }
+
+    public function getPrice($id){
+        // Priprema upita s prijenosom parametra
+        $sql = 'SELECT price FROM trainings WHERE training_id=?';
+        // Priprema upit s prijenosom parametra
+        $stmt = $this->db->getConnection()->prepare($sql);
+        // Povezivanje parametra s upitom
+        $stmt->bind_param('i', $id);
+        // Izvršavanje upita
+        $stmt->execute();
+        // Dobivanje rezultata upita
+        $result = $stmt->get_result();
+        
+        // Provjera uspješnosti upita
+        if ($result) {
+            // Dohvaćanje rezultata
+            $row = $result->fetch_assoc();
+            // Oslobađanje resursa
+            $stmt->close();
+            // Vraćanje rezultata
+            return $row['price'];
+        } else {
+            // Ako upit nije uspješan, vratimo neku podrazumijevanu vrijednost ili prikažemo grešku
+            return "N/A"; // Možete vratiti neku podrazumijevanu vrijednost
+        }
+    }
+    
+
 }
 
+
+    
 
 
 
