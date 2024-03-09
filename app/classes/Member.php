@@ -95,8 +95,6 @@ class Member{
     public function edit_member($id){
 
     }
-
-
     
     public function generetePdf($id,$first_name,$last_name,$email){
         $pdf = new FPDF();
@@ -153,31 +151,61 @@ class Member{
         return $results;
     }
 
-    public function getPrice($id){
-        // Priprema upita s prijenosom parametra
-        $sql = 'SELECT price FROM trainings WHERE training_id=?';
-        // Priprema upit s prijenosom parametra
+
+    public function editMember($id, $date_created, $date_exp, $trainer_id, $training_id) {
+        $sql = 'INSERT INTO date (created_date, expired_date) VALUES (?, ?)';
+    
         $stmt = $this->db->getConnection()->prepare($sql);
-        // Povezivanje parametra s upitom
-        $stmt->bind_param('i', $id);
-        // Izvršavanje upita
+        $stmt->bind_param('ss', $date_created, $date_exp);
         $stmt->execute();
-        // Dobivanje rezultata upita
-        $result = $stmt->get_result();
-        
-        // Provjera uspješnosti upita
-        if ($result) {
-            // Dohvaćanje rezultata
-            $row = $result->fetch_assoc();
-            // Oslobađanje resursa
-            $stmt->close();
-            // Vraćanje rezultata
-            return $row['price'];
-        } else {
-            // Ako upit nije uspješan, vratimo neku podrazumijevanu vrijednost ili prikažemo grešku
-            return "N/A"; // Možete vratiti neku podrazumijevanu vrijednost
+    
+        if ($stmt->errno) {
+            echo "Greška prilikom izvršenja upita za umetanje datuma: " . $stmt->error;
+            return false;
         }
+            
+        $last_date_id = $stmt->insert_id;
+
+        if ($last_date_id == 0) {
+            echo "error";
+            return false;
+        }
+        
+        $sql_upd = 'UPDATE members SET trainer_id=?, training_id=?, date_id=? WHERE member_id=?';
+        $stmt_upd = $this->db->getConnection()->prepare($sql_upd);
+        $stmt_upd->bind_param('iiii', $trainer_id, $training_id, $last_date_id, $id);
+        $stmt_upd->execute();
+    
+        if ($stmt_upd->errno) {
+            echo "error " . $stmt_upd->error;
+            return false;
+        }
+    
+        return true;
     }
+
+
+    public function sendMailToMember(){
+        $sql = "SELECT members.*,
+        trainers.fist_name as trainer_first_name,
+        trainers.last_name as trainer_last_name,
+        trainings.name as training_name,
+        trainings.sesions as training_session,
+        trainings.price as training_price,
+        date.created_date as created,
+        expired_date as expired
+        FROM members
+        LEFT JOIN trainers ON members.trainer_id = trainers.trainer_id
+        LEFT JOIN trainings ON members.training_id = trainings.training_id
+        LEFT JOIN date on date.date_id= members.date_id";
+        
+        $run=$this->db->getConnection()->query($sql);
+        $results=$run->fetch_all(MYSQLI_ASSOC);
+
+        return $results;
+    }   
+    
+    
     
 
 }

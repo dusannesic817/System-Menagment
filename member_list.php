@@ -48,11 +48,13 @@ require_once 'inc/header.php';
     <title>List of Members</title>
 </head>
 <body>
-<?php  if($session->issetSession('delete')) : ?>
+<?php  if($session->issetSession('delete') or $session->issetSession('update')) : ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?php
                 echo $_SESSION['delete'];
+                echo $_SESSION['update'];
                 unset($_SESSION['delete']);
+                unset($_SESSION['update']);
                 ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

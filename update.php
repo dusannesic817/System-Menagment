@@ -11,13 +11,14 @@ $currentDate = date('Y-m-d');
 $nextMonthDate = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
 
 
-
+$session= new Session();
 $user= new User();
 $member= new Member();
 
 if(isset($_GET['id']) && $user->isLoged()){
 
     $id=$_GET['id'];
+    $_SESSION['memberId']=$id;
    
 
     $list=$member->memberId($id);
@@ -34,6 +35,25 @@ if(isset($_GET['id']) && $user->isLoged()){
     
 }
 
+
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        
+        $trainer_id=$_POST['trainer_id'];
+        $training=$_POST['training_plan_id'];
+        $date_created=$_POST['start_date'];
+        $date_exp=$_POST['expirience_date'];
+
+        $edit=$member->editMember($_SESSION['memberId'],$date_created,$date_exp,$trainer_id,$training);
+
+        if($edit){
+            $_SESSION['update']= 'Uspesno upisan clan';
+            header('location:update.php?id='.$_SESSION['memberId']);
+           exit();
+        }else{
+            $_SESSION['update']= 'Neuspesno upisan clan';
+        }
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +66,17 @@ if(isset($_GET['id']) && $user->isLoged()){
     <title>Update member</title>
 </head>
 <body>
+<?php  if($session->issetSession('update')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php
+                
+                echo $_SESSION['update'];
+                unset($_SESSION['update']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <?php  endif;?>
     <form action="" method='POST'>
         <div class='container'> 
             <table class="table">
@@ -54,7 +85,6 @@ if(isset($_GET['id']) && $user->isLoged()){
                         <th scope="col">Name</th>
                         <th scope="col">Trainer</th>
                         <th scope="col">Training Session</th>       
-                        <th scope="col">Price</th>
                         <th scope="col">Date started</th>
                         <th scope="col">Date experience</th>
                         <th scope="col">Submit</th>
@@ -87,9 +117,7 @@ if(isset($_GET['id']) && $user->isLoged()){
                                 ?>
                             </select>
                         </td>
-                        <td>
-                         
-                        </td>
+                       
                         <td>
                             <input
                                 type="date"
@@ -106,13 +134,13 @@ if(isset($_GET['id']) && $user->isLoged()){
                                 type="date"
                                 id='start_date'
                                 class="form-control"
-                                name='start_date'
+                                name='expirience_date'
                                 value="<?php echo $nextMonthDate?>"
                                 min='2024-01-01'
                                 max='2027-01-01'
                             >
                         </td>
-                        <td>Submit</td>
+                        <td> <button type="submit" class="btn btn-primary">Submit</button></td>
                     </tr>
                 </tbody>
             </table>   
