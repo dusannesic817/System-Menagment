@@ -16,10 +16,10 @@ require 'phpmailer/src/SMTP.php';
     $mail->Host       = 'smtp.gmail.com';       //Set the SMTP server to send through
     $mail->SMTPAuth   = true;             //Enable SMTP authentication
     $mail->Username   = 'dusannesic28@gmail.com';   //SMTP write your email
-    $mail->Password   = 'xlmchyvldjyhzuls';      //SMTP password
+    $mail->Password   = '';      //SMTP password
     $mail->SMTPSecure = 'ssl';            //Enable implicit SSL encryption
     $mail->Port       = 465;                                    
-    
+
     //Recipients
     $mail->setFrom($email,'GYM Team'); // Sender Email and name
     $mail->addAddress($email);     //Add a recipient email  
