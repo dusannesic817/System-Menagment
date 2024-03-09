@@ -193,7 +193,7 @@ class Member{
         trainings.sesions as training_session,
         trainings.price as training_price,
         date.created_date as created,
-        expired_date as expired
+        date.expired_date as expired
         FROM members
         LEFT JOIN trainers ON members.trainer_id = trainers.trainer_id
         LEFT JOIN trainings ON members.training_id = trainings.training_id
