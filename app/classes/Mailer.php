@@ -8,7 +8,7 @@ require_once 'phpmailer/src/SMTP.php';
 require_once 'phpmailer/src/Exception.php';
 
 function sendMail($emails) {
-$htmlContent = file_get_contents('../../text_message.html');
+$htmlContent = file_get_contents('text_message.html');
 $mail = new PHPMailer(true);
 
 

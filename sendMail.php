@@ -13,22 +13,27 @@ $currentDate = date('Y-m-d');
 
 $member=new Member();
 
+
 $list_member=$member->sendMailToMember();
 foreach($list_member as $value){
     $expired=$value['expired'];
+    echo $expired;
 
     $daysUntilNextMonth = (strtotime($expired) - strtotime($currentDate)) / (60 * 60 * 24);
     $daysUntilNextMonth=ceil($daysUntilNextMonth);
 
     if($daysUntilNextMonth==1){
-      
+       
         $emails=($value['email']);
 
-      // sendMail($emails);
+         sendMail($emails);
 
     }
 
+
 }
+
+
 
 
 
